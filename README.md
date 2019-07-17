@@ -1,16 +1,16 @@
 W101 PD Script
 
-Instructions:
-Go to Pet Dance game, wait on spiral on ground, make sure menu is closed
-Run Script
-Enter amount of energy in popup Ex: 40 is 5 times (Because it divides your input by 8)
+Instructions:  
+ 1. Go to Pet Dance game, wait on spiral on ground, make sure menu is closed  
+ 2. Run Script  
+ 3. Enter amount of games  
 
-Game settings need to be:
-Resolution 800x600
-UI Size HUGE
-Texture Detail HIGH
-Hardware Cursor ON
-Brightness MAX
-Particles MAX
-Classic Mode ON
-Shadows ON
+Game settings need to be:  
+ Resolution 800x600  
+ UI Size HUGE  
+ Texture Detail HIGH  
+ Hardware Cursor ON  
+ Brightness MAX  
+ Particles MAX  
+ Classic Mode ON  
+ Shadows ON  

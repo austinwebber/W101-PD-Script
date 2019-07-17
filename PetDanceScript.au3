@@ -1,4 +1,109 @@
 #include <Array.au3>
+#include <ButtonConstants.au3>
+#include <ComboConstants.au3>
+#include <EditConstants.au3>
+#include <GUIConstantsEx.au3>
+#include <StaticConstants.au3>
+#include <WindowsConstants.au3>
+Global $LocationsArray[5] = []
+Global $SnacksArray[5] = []
+#Region ### START Koda GUI section ### Form=c:\users\admin\desktop\autoit\form1.kxf
+Global $PDGUI = GUICreate("GUI", 242, 264, -1, -1)
+Global $Start = GUICtrlCreateButton("Start", 8, 224, 225, 25)
+Global $Locations = GUICtrlCreateLabel("Locations to Farm:", 8, 8, 91, 17)
+GUICtrlSetFont(-1, 8, 400, 4, "MS Sans Serif")
+Global $WizardCity = GUICtrlCreateCheckbox("Wizard City", 16, 24, 73, 17)
+GUICtrlSetState(-1, $GUI_CHECKED)
+Global $Krokotopia = GUICtrlCreateCheckbox("Krokotopia", 16, 40, 73, 17)
+Global $Marleybone = GUICtrlCreateCheckbox("Marleybone", 16, 56, 73, 17)
+Global $Mooshu = GUICtrlCreateCheckbox("Mooshu", 16, 72, 57, 17)
+Global $Dragonspyre = GUICtrlCreateCheckbox("Dragonspyre", 16, 88, 81, 17)
+Global $Label1 = GUICtrlCreateLabel("Pet Snacks to Feed:", 136, 8, 101, 17)
+GUICtrlSetFont(-1, 8, 400, 4, "MS Sans Serif")
+Global $S1 = GUICtrlCreateCheckbox("Snack 1", 152, 24, 57, 17)
+GUICtrlSetState(-1, $GUI_CHECKED)
+Global $S2 = GUICtrlCreateCheckbox("Snack 2", 152, 40, 57, 17)
+Global $S3 = GUICtrlCreateCheckbox("Snack 3", 152, 56, 57, 17)
+Global $S4 = GUICtrlCreateCheckbox("Snack 4", 152, 72, 57, 17)
+Global $S5 = GUICtrlCreateCheckbox("Snack 5", 152, 88, 57, 17)
+GUICtrlCreateInput("", 8, 138, 89, 21)
+GUICtrlSetBkColor(-1, 0xFFFFFF)
+GUICtrlSetTip(-1, "Amount of Games")
+$Label2 = GUICtrlCreateLabel("Amount of Games:", 8, 120, 91, 17)
+GUICtrlSetFont(-1, 8, 400, 4, "MS Sans Serif")
+$Label3 = GUICtrlCreateLabel("Color Tolerance:", 144, 120, 82, 17)
+GUICtrlSetFont(-1, 8, 400, 4, "MS Sans Serif")
+$Tolerance = GUICtrlCreateCombo("", 136, 138, 89, 25, BitOR($CBS_DROPDOWN,$CBS_AUTOHSCROLL))
+GUICtrlSetData(-1, "5|6|7|8|9|10", "5")
+$Label4 = GUICtrlCreateLabel("Resolution:", 8, 176, 57, 17)
+GUICtrlSetFont(-1, 8, 400, 4, "MS Sans Serif")
+$Resolution = GUICtrlCreateCombo("", 8, 194, 89, 25, BitOR($CBS_DROPDOWN,$CBS_AUTOHSCROLL))
+GUICtrlSetData(-1, "800x600|1024x768|1152x864|1176x664|1280x720|1280x768|1280x800|1280x960|1280x1024|1360x768|1366x768|1600x900|1600x1024|1680x1050|1768x992|1440x900|1920x1080|", "800x600")
+GUISetState(@SW_SHOW)
+#EndRegion ### END Koda GUI section ###
+
+While 1
+	$nMsg = GUIGetMsg()
+	Switch $nMsg
+		Case $GUI_EVENT_CLOSE
+			Exit
+		Case $Start
+			If (GUICtrlRead($WizardCity) = 1) Then
+				$LocationsArray[0] = 1
+			Else
+				$LocationsArray[0] = 0
+			EndIf
+			If (GUICtrlRead($Krokotopia) = 1) Then
+				$LocationsArray[1] = 1
+			Else
+				$LocationsArray[1] = 0
+			EndIf
+			If (GUICtrlRead($Marleybone) = 1) Then
+				$LocationsArray[2] = 1
+			Else
+				$LocationsArray[2] = 0
+			EndIf
+			If (GUICtrlRead($Mooshu) = 1) Then
+				$LocationsArray[3] = 1
+			Else
+				$LocationsArray[3] = 0
+			EndIf
+			If (GUICtrlRead($Dragonspyre) = 1) Then
+				$LocationsArray[4] = 1
+			Else
+				$LocationsArray[4] = 0
+			EndIf
+			If (GUICtrlRead($S1) = 1) Then
+				$SnacksArray[0] = 1
+			Else
+				$SnacksArray[0] = 0
+			EndIf
+			If (GUICtrlRead($S2) = 1) Then
+				$SnacksArray[1] = 1
+			Else
+				$SnacksArray[1] = 0
+			EndIf
+			If (GUICtrlRead($S3) = 1) Then
+				$SnacksArray[2] = 1
+			Else
+				$SnacksArray[2] = 0
+			EndIf
+			If (GUICtrlRead($S4) = 1) Then
+				$SnacksArray[3] = 1
+			Else
+				$SnacksArray[3] = 0
+			EndIf
+			If (GUICtrlRead($S5) = 1) Then
+				$SnacksArray[4] = 1
+			Else
+				$SnacksArray[4] = 0
+			EndIf
+			ConsoleWrite($SnacksArray[3])
+			#Dance()
+	EndSwitch
+WEnd
+
+Func Dance()
 WinActivate("Wizard101")
 HotKeySet("q", "_Exit")
 Local $Loop = 1
@@ -88,6 +193,7 @@ While $Loop <= $Times
    WEnd
    $Loop = $Loop + 1
 WEnd
+EndFunc
 
 Func _Exit()
    Exit

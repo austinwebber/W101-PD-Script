@@ -7,6 +7,21 @@
 #include <WindowsConstants.au3>
 Global $LocationsArray[5] = []
 Global $SnacksArray[5] = []
+
+Global $Snack1Coords[2] = [175, 480]
+Global $Snack2Coords[2] = [288, 480]
+Global $Snack3Coords[2] = [406, 480]
+Global $Snack4Coords[2] = [516, 480]
+Global $Snack5Coords[2] = [634, 480]
+Global $TempSnackCoords[0] = []
+
+Global $WizardCityCoords[2] = [174, 490]
+Global $KrokotopiaCoords[2] = [287, 490]
+Global $MarleyBoneCoords[2] = [402, 490]
+Global $MooshuCoords[2] = [516, 490]
+Global $DragonspyreCoords[2] = [631, 490]
+Global $TempLocationCoords[0] = []
+
 #Region ### START Koda GUI section ### Form=c:\users\admin\desktop\autoit\form1.kxf
 Global $PDGUI = GUICreate("GUI", 242, 264, -1, -1)
 Global $Start = GUICtrlCreateButton("Start", 8, 224, 225, 25)
@@ -50,55 +65,75 @@ While 1
 		Case $Start
 			If (GUICtrlRead($WizardCity) = 1) Then
 				$LocationsArray[0] = 1
+				_ArrayAdd($TempLocationCoords, $WizardCityCoords)
 			Else
 				$LocationsArray[0] = 0
 			EndIf
 			If (GUICtrlRead($Krokotopia) = 1) Then
 				$LocationsArray[1] = 1
+				_ArrayAdd($TempLocationCoords, $KrokotopiaCoords)
 			Else
 				$LocationsArray[1] = 0
 			EndIf
 			If (GUICtrlRead($Marleybone) = 1) Then
 				$LocationsArray[2] = 1
+				_ArrayAdd($TempLocationCoords, $MarleyBoneCoords)
 			Else
 				$LocationsArray[2] = 0
 			EndIf
 			If (GUICtrlRead($Mooshu) = 1) Then
 				$LocationsArray[3] = 1
+				_ArrayAdd($TempLocationCoords, $MooshuCoords)
 			Else
 				$LocationsArray[3] = 0
 			EndIf
 			If (GUICtrlRead($Dragonspyre) = 1) Then
 				$LocationsArray[4] = 1
+				_ArrayAdd($TempLocationCoords, $DragonspyreCoords)
 			Else
 				$LocationsArray[4] = 0
 			EndIf
 			If (GUICtrlRead($S1) = 1) Then
 				$SnacksArray[0] = 1
+				_ArrayAdd($TempSnackCoords, $Snack1Coords)
 			Else
 				$SnacksArray[0] = 0
 			EndIf
 			If (GUICtrlRead($S2) = 1) Then
 				$SnacksArray[1] = 1
+				_ArrayAdd($TempSnackCoords, $Snack2Coords)
 			Else
 				$SnacksArray[1] = 0
 			EndIf
 			If (GUICtrlRead($S3) = 1) Then
 				$SnacksArray[2] = 1
+				_ArrayAdd($TempSnackCoords, $Snack3Coords)
 			Else
 				$SnacksArray[2] = 0
 			EndIf
 			If (GUICtrlRead($S4) = 1) Then
 				$SnacksArray[3] = 1
+				_ArrayAdd($TempSnackCoords, $Snack4Coords)
 			Else
 				$SnacksArray[3] = 0
 			EndIf
 			If (GUICtrlRead($S5) = 1) Then
 				$SnacksArray[4] = 1
+				_ArrayAdd($TempSnackCoords, $Snack5Coords)
 			Else
 				$SnacksArray[4] = 0
 			EndIf
-			ConsoleWrite($SnacksArray[3])
+			#_ArrayDisplay($TempSnackCoords)
+			Local $Amount1 = UBound($TempSnackCoords)
+			Local $Amount2 = UBound($TempLocationCoords)
+			if ($Amount1 <= 0) Then
+				$SnacksArray[0] = 1
+				_ArrayAdd($TempSnackCoords, $Snack1Coords)
+			EndIf
+			if ($Amount2 <= 0) Then
+				$LocationsArray[0] = 1
+				_ArrayAdd($TempLocationCoords, $WizardCityCoords)
+			EndIf
 			#Dance()
 	EndSwitch
 WEnd

@@ -1,3 +1,10 @@
+### W101 Pet Dance Script ###
+### Developed by Austin Webber ###
+### Original idea & creation by Zachary King ###
+
+#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
+#AutoIt3Wrapper_Icon=..\..\..\Downloads\W101.ico
+#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 #include <Array.au3>
 #include <ButtonConstants.au3>
 #include <ComboConstants.au3>
@@ -10,22 +17,22 @@
 Global $LocationsArray[5] = []
 Global $SnacksArray[5] = []
 
-Global $Snack1Coords[2] = [175, 480]
-Global $Snack2Coords[2] = [288, 480]
-Global $Snack3Coords[2] = [406, 480]
-Global $Snack4Coords[2] = [516, 480]
-Global $Snack5Coords[2] = [634, 480]
+Global $Snack1Coords[1] = [175]
+Global $Snack2Coords[1] = [288]
+Global $Snack3Coords[1] = [406]
+Global $Snack4Coords[1] = [516]
+Global $Snack5Coords[1] = [634]
 Global $TempSnackCoords[0] = []
 
-Global $WizardCityCoords[2] = [174, 490]
-Global $KrokotopiaCoords[2] = [287, 490]
-Global $MarleyBoneCoords[2] = [402, 490]
-Global $MooshuCoords[2] = [516, 490]
-Global $DragonspyreCoords[2] = [631, 490]
+Global $WizardCityCoords[1] = [174]
+Global $KrokotopiaCoords[1] = [287]
+Global $MarleyBoneCoords[1] = [402]
+Global $MooshuCoords[1] = [516]
+Global $DragonspyreCoords[1] = [631]
 Global $TempLocationCoords[0] = []
 
 #Region ### START Koda GUI section ### Form=c:\users\admin\desktop\autoit\form1.kxf
-Global $PDGUI = GUICreate("GUI", 242, 199, -1, -1)
+Global $PDGUI = GUICreate("W101 PD", 242, 199, -1, -1)
 Global $Start = GUICtrlCreateButton("Start", 8, 168, 225, 25)
 Global $Locations = GUICtrlCreateLabel("Locations to Farm:", 8, 8, 91, 17)
 GUICtrlSetFont(-1, 8, 400, 4, "MS Sans Serif")
@@ -147,7 +154,7 @@ While 1
 
 			;Read Tolerance
 			Global $Tolerance = GUICtrlRead($comboBox)
-			ConsoleWrite($Tolerance)
+
 			GUISetState(@SW_HIDE)
 			Dance()
 			GUISetState(@SW_SHOW)
@@ -160,15 +167,21 @@ HotKeySet("q", "_Exit")
 Local $Loop = 1
 WinActivate("Wizard101")
 Local $ClientPos = WinGetPos("Wizard101")
+Local $x = 0 ;Current index in $TempSnackCoords
+Local $y = 0 ;Current index in $TempLocationCoords
 ProgressOn("", "Amount of Games", $DLG_NOTITLE) ;Create Progress Bar
 While $Loop <= $numOfGames
-   ProgressSet((($Loop - 1) / $numOfGames) * 100, (($Loop - 1) / $numOfGames) * 100 & "%", "Amount of Games: " & $Loop & "/" & $numOfGames) ;Progress Bar Update
+   ProgressSet(0, 0 & "%", "Amount of Games: " & $Loop & "/" & $numOfGames) ;Progress Bar Update
    Send("x")
    Sleep(300)
-   MouseClick("Left", $ClientPos[0] + 632, $ClientPos[1] + 491) ;Begin Game
+   if ($y == UBound($TempLocationCoords)) Then ;Reset Index
+		$y = 0
+   EndIf
+   MouseClick("Left", $ClientPos[0] + $TempLocationCoords[$y], $ClientPos[1] + 490) ;Begin Game
+   $y = $y + 1 ;Increment Index
    MouseClick("Left", $ClientPos[0] + 627, $ClientPos[1] + 588)
    Local $MoveArray[7] = []
-   While PixelGetColor($ClientPos[0] + 595, $ClientPos[1] + 593) <> 0x40382E ;Wait until minigame has loaded
+   While PixelGetColor($ClientPos[0] + 141, $ClientPos[1] + 154, 5) <> 0xEF81BD ;Wait until minigame has loaded
 	  Sleep(20)
    WEnd
    ConsoleWrite("Game Starting... ")
@@ -227,11 +240,18 @@ While $Loop <= $numOfGames
 			Sleep(150)
 		 EndIf
 	  Next
+	  ProgressSet((($Round - 1) * 20), (($Round - 1) * 20) & "%",  "Amount of Games: " & $Loop & "/" & $numOfGames)
    Next
    Sleep(2500) ;Wait for loading
    MouseClick("Left", $ClientPos[0] + 620, $ClientPos[1] + 588) ;Next
    Sleep(100)
-   MouseClick("Left", $ClientPos[0] + 174, $ClientPos[1] + 487) ;Snack Select
+   if ($x == UBound($TempSnackCoords)) Then ;Reset Index
+		$x = 0
+   EndIf
+   #_ArrayDisplay($TempSnackCoords)
+   ConsoleWrite($x)
+   MouseClick("Left", $ClientPos[0] + $TempSnackCoords[$x], $ClientPos[1] + 480) ;Snack Select
+   $x = $x + 1
    MouseClick("Left", $ClientPos[0] + 620, $ClientPos[1] + 588) ;Feed Pet
    MouseClick("Left", $ClientPos[0] + 184, $ClientPos[1] + 588) ;Exit
    $Loaded = False

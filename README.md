@@ -5,7 +5,7 @@ Instructions:
  2. Run Script  
  3. Enter amount of games  
 
-Game settings need to be:  
+Settings need to be:  
  Resolution 800x600  
  UI Size HUGE  
  Texture Detail HIGH  

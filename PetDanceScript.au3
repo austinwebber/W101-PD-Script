@@ -5,6 +5,8 @@
 #include <GUIConstantsEx.au3>
 #include <StaticConstants.au3>
 #include <WindowsConstants.au3>
+#include <AutoItConstants.au3>
+
 Global $LocationsArray[5] = []
 Global $SnacksArray[5] = []
 
@@ -23,8 +25,8 @@ Global $DragonspyreCoords[2] = [631, 490]
 Global $TempLocationCoords[0] = []
 
 #Region ### START Koda GUI section ### Form=c:\users\admin\desktop\autoit\form1.kxf
-Global $PDGUI = GUICreate("GUI", 242, 264, -1, -1)
-Global $Start = GUICtrlCreateButton("Start", 8, 224, 225, 25)
+Global $PDGUI = GUICreate("GUI", 242, 199, -1, -1)
+Global $Start = GUICtrlCreateButton("Start", 8, 168, 225, 25)
 Global $Locations = GUICtrlCreateLabel("Locations to Farm:", 8, 8, 91, 17)
 GUICtrlSetFont(-1, 8, 400, 4, "MS Sans Serif")
 Global $WizardCity = GUICtrlCreateCheckbox("Wizard City", 16, 24, 73, 17)
@@ -41,19 +43,15 @@ Global $S2 = GUICtrlCreateCheckbox("Snack 2", 152, 40, 57, 17)
 Global $S3 = GUICtrlCreateCheckbox("Snack 3", 152, 56, 57, 17)
 Global $S4 = GUICtrlCreateCheckbox("Snack 4", 152, 72, 57, 17)
 Global $S5 = GUICtrlCreateCheckbox("Snack 5", 152, 88, 57, 17)
-GUICtrlCreateInput("", 8, 138, 89, 21)
+Global $Games = GUICtrlCreateInput("", 8, 138, 89, 21)
 GUICtrlSetBkColor(-1, 0xFFFFFF)
 GUICtrlSetTip(-1, "Amount of Games")
-$Label2 = GUICtrlCreateLabel("Amount of Games:", 8, 120, 91, 17)
+Global $Label2 = GUICtrlCreateLabel("Amount of Games:", 8, 120, 91, 17)
 GUICtrlSetFont(-1, 8, 400, 4, "MS Sans Serif")
-$Label3 = GUICtrlCreateLabel("Color Tolerance:", 144, 120, 82, 17)
+Global $Label3 = GUICtrlCreateLabel("Color Tolerance:", 141, 120, 82, 17)
 GUICtrlSetFont(-1, 8, 400, 4, "MS Sans Serif")
-$Tolerance = GUICtrlCreateCombo("", 136, 138, 89, 25, BitOR($CBS_DROPDOWN,$CBS_AUTOHSCROLL))
+Global $comboBox = GUICtrlCreateCombo("", 136, 138, 89, 21, BitOR($CBS_DROPDOWN,$CBS_AUTOHSCROLL))
 GUICtrlSetData(-1, "5|6|7|8|9|10", "5")
-$Label4 = GUICtrlCreateLabel("Resolution:", 8, 176, 57, 17)
-GUICtrlSetFont(-1, 8, 400, 4, "MS Sans Serif")
-$Resolution = GUICtrlCreateCombo("", 8, 194, 89, 25, BitOR($CBS_DROPDOWN,$CBS_AUTOHSCROLL))
-GUICtrlSetData(-1, "800x600|1024x768|1152x864|1176x664|1280x720|1280x768|1280x800|1280x960|1280x1024|1360x768|1366x768|1600x900|1600x1024|1680x1050|1768x992|1440x900|1920x1080|", "800x600")
 GUISetState(@SW_SHOW)
 #EndRegion ### END Koda GUI section ###
 
@@ -62,7 +60,12 @@ While 1
 	Switch $nMsg
 		Case $GUI_EVENT_CLOSE
 			Exit
-		Case $Start
+		Case $Start ;Gather data entered from GUI and launch program
+			Global $LocationsArray[5] = []
+			Global $SnacksArray[5] = []
+			Global $TempSnackCoords[0] = []
+			Global $TempLocationCoords[0] = []
+
 			If (GUICtrlRead($WizardCity) = 1) Then
 				$LocationsArray[0] = 1
 				_ArrayAdd($TempLocationCoords, $WizardCityCoords)
@@ -123,7 +126,8 @@ While 1
 			Else
 				$SnacksArray[4] = 0
 			EndIf
-			#_ArrayDisplay($TempSnackCoords)
+
+			;Handle if the user checks no boxes
 			Local $Amount1 = UBound($TempSnackCoords)
 			Local $Amount2 = UBound($TempLocationCoords)
 			if ($Amount1 <= 0) Then
@@ -134,7 +138,19 @@ While 1
 				$LocationsArray[0] = 1
 				_ArrayAdd($TempLocationCoords, $WizardCityCoords)
 			EndIf
-			#Dance()
+
+			;Read Amount of Games
+			Global $numOfGames = GUICtrlRead($Games)
+			if ($numOfGames == "" Or $numOfGames < 1) Then
+				$numOfGames = 1
+			EndIf
+
+			;Read Tolerance
+			Global $Tolerance = GUICtrlRead($comboBox)
+			ConsoleWrite($Tolerance)
+			GUISetState(@SW_HIDE)
+			Dance()
+			GUISetState(@SW_SHOW)
 	EndSwitch
 WEnd
 
@@ -142,10 +158,11 @@ Func Dance()
 WinActivate("Wizard101")
 HotKeySet("q", "_Exit")
 Local $Loop = 1
-Local $Times = InputBox("Games to play", "How many times do you want to play?")
 WinActivate("Wizard101")
 Local $ClientPos = WinGetPos("Wizard101")
-While $Loop <= $Times
+ProgressOn("", "Amount of Games", $DLG_NOTITLE) ;Create Progress Bar
+While $Loop <= $numOfGames
+   ProgressSet((($Loop - 1) / $numOfGames) * 100, (($Loop - 1) / $numOfGames) * 100 & "%", "Amount of Games: " & $Loop & "/" & $numOfGames) ;Progress Bar Update
    Send("x")
    Sleep(300)
    MouseClick("Left", $ClientPos[0] + 632, $ClientPos[1] + 491) ;Begin Game
@@ -163,7 +180,7 @@ While $Loop <= $Times
 		 PixelSearch($ClientPos[0] + 402, $ClientPos[1] + 545, $ClientPos[0] + 402, $ClientPos[1] + 545, 0xF3E75A, 15)
 		 If Not(@error) Then
 			;Up or Down
-			PixelSearch($ClientPos[0] + 402, $ClientPos[1] + 578, $ClientPos[0] + 402, $ClientPos[1] + 578, 0x695B08, 5)
+			PixelSearch($ClientPos[0] + 402, $ClientPos[1] + 578, $ClientPos[0] + 402, $ClientPos[1] + 578, 0x695B08, $Tolerance)
 			If Not(@Error) Then
 			   ConsoleWrite("UP, ")
 			   _ArrayInsert($MoveArray, $Moves, "Up")
@@ -228,6 +245,8 @@ While $Loop <= $Times
    WEnd
    $Loop = $Loop + 1
 WEnd
+ProgressSet(100, "Done!", "Complete")
+ProgressOff()
 EndFunc
 
 Func _Exit()

@@ -9,7 +9,7 @@ Instructions:
  1. Go to Pet Dance game, wait on spiral on ground, make sure menu is closed  
  2. Run Script  
  3. Enter amount of games  
- 4. If it ends up failing a few times, adjust color tolerance to 10 or 15.
+ 4. If it ends up failing a few times, adjust color tolerance to 10 or 15
 
 Settings need to be:  
  Resolution 800x600  

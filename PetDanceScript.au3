@@ -237,7 +237,7 @@ While $Loop <= $numOfGames
 		 ElseIf $MoveArray[$i] == "Left" Then
 			ConsoleWrite("Sending Left, ")
 			Send("a")
-			Sleep(300)
+			Sleep(250)
 		 EndIf
 	  Next
 	  ProgressSet((($Round - 1) * 20), (($Round - 1) * 20) & "%",  "Amount of Games: " & $Loop & "/" & $numOfGames)

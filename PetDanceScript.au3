@@ -225,19 +225,19 @@ While $Loop <= $numOfGames
 		 If $MoveArray[$i] == "Down" Then
 			ConsoleWrite("Sending Down, ")
 			Send("s")
-			Sleep(150)
+			Sleep(250)
 		 ElseIf $MoveArray[$i] == "Up" Then
 			ConsoleWrite("Sending Up, ")
 			Send("w")
-			Sleep(150)
+			Sleep(250)
 		 ElseIf $MoveArray[$i] == "Right" Then
 			ConsoleWrite("Sending Right, ")
 			Send("d")
-			Sleep(150)
+			Sleep(250)
 		 ElseIf $MoveArray[$i] == "Left" Then
 			ConsoleWrite("Sending Left, ")
 			Send("a")
-			Sleep(150)
+			Sleep(250)
 		 EndIf
 	  Next
 	  ProgressSet((($Round - 1) * 20), (($Round - 1) * 20) & "%",  "Amount of Games: " & $Loop & "/" & $numOfGames)

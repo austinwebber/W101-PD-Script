@@ -1,6 +1,23 @@
-### W101 Pet Dance Script ###
-### Developed by Austin Webber ###
-### Original idea & creation by Zachary King ###
+#cs ----------------------------------------------------------------------------
+
+ AutoIt Version: 3.3.14.5
+ Author:         Austin Webber (prev. by Zachary King) https://github.com/austindwebber
+
+ Script Function:
+	Wizard101 Automatic Pet Dance Game.
+
+	Settings need to be:
+	 Resolution 800x600
+	 UI Size HUGE
+	 Texture Detail HIGH
+	 Hardware Cursor ON
+	 Brightness MAX
+	 Particles MAX
+	 Shadows ON
+	 Classic Mode ON
+
+
+#ce ----------------------------------------------------------------------------
 
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Icon=..\..\..\Downloads\W101.ico
@@ -58,7 +75,7 @@ GUICtrlSetFont(-1, 8, 400, 4, "MS Sans Serif")
 Global $Label3 = GUICtrlCreateLabel("Color Tolerance:", 141, 120, 82, 17)
 GUICtrlSetFont(-1, 8, 400, 4, "MS Sans Serif")
 Global $comboBox = GUICtrlCreateCombo("", 136, 138, 89, 21, BitOR($CBS_DROPDOWN,$CBS_AUTOHSCROLL))
-GUICtrlSetData(-1, "5|6|7|8|9|10", "5")
+GUICtrlSetData(-1, "10|15", "15")
 GUISetState(@SW_SHOW)
 #EndRegion ### END Koda GUI section ###
 
@@ -162,16 +179,16 @@ While 1
 WEnd
 
 Func Dance()
-WinActivate("Wizard101")
+WinActivate("[CLASS:Wizard Graphical Client]")
 HotKeySet("q", "_Exit")
 Local $Loop = 1
-WinActivate("Wizard101")
-Local $ClientPos = WinGetPos("Wizard101")
+WinMove("[CLASS:Wizard Graphical Client]","", 0, 0)
+Local $ClientPos = WinGetPos("[CLASS:Wizard Graphical Client]")
 Local $x = 0 ;Current index in $TempSnackCoords
 Local $y = 0 ;Current index in $TempLocationCoords
 ProgressOn("", "Amount of Games", $DLG_NOTITLE) ;Create Progress Bar
 While $Loop <= $numOfGames
-   ProgressSet(0, 0 & "%", "Amount of Games: " & $Loop & "/" & $numOfGames) ;Progress Bar Update
+   ProgressSet(0, 0 & "%  (press 'q' to quit)", "Amount of Games: " & $Loop & "/" & $numOfGames) ;Progress Bar Update
    Send("x")
    Sleep(300)
    if ($y == UBound($TempLocationCoords)) Then ;Reset Index
@@ -181,7 +198,7 @@ While $Loop <= $numOfGames
    $y = $y + 1 ;Increment Index
    MouseClick("Left", $ClientPos[0] + 627, $ClientPos[1] + 588)
    Local $MoveArray[7] = []
-   While PixelGetColor($ClientPos[0] + 141, $ClientPos[1] + 154, 5) <> 0xEF81BD ;Wait until minigame has loaded
+   While PixelGetColor($ClientPos[0] + 141, $ClientPos[1] + 154, 5) == 15694520 ;Wait until minigame has loaded
 	  Sleep(20)
    WEnd
    ConsoleWrite("Game Starting... ")
@@ -190,10 +207,10 @@ While $Loop <= $numOfGames
 	  Local $Moves = 0
 	  ;Get Moves
 	  While $Moves <= $Round
-		 PixelSearch($ClientPos[0] + 402, $ClientPos[1] + 545, $ClientPos[0] + 402, $ClientPos[1] + 545, 0xF3E75A, 15)
+		 PixelSearch($ClientPos[0] + 404, $ClientPos[1] + 547, $ClientPos[0] + 404, $ClientPos[1] + 547, 0xCAC375, $Tolerance)
 		 If Not(@error) Then
 			;Up or Down
-			PixelSearch($ClientPos[0] + 402, $ClientPos[1] + 578, $ClientPos[0] + 402, $ClientPos[1] + 578, 0x695B08, $Tolerance)
+			PixelSearch($ClientPos[0] + 404, $ClientPos[1] + 580, $ClientPos[0] + 404, $ClientPos[1] + 580, 0x877710, $Tolerance)
 			If Not(@Error) Then
 			   ConsoleWrite("UP, ")
 			   _ArrayInsert($MoveArray, $Moves, "Up")
@@ -204,16 +221,16 @@ While $Loop <= $numOfGames
 			$Moves = $Moves + 1
 			Sleep(200)
 		 EndIf
-		 PixelSearch($ClientPos[0] + 389, $ClientPos[1] + 560, $ClientPos[0] + 389, $ClientPos[1] + 560, 0xD5C82A, 15)
+		 PixelSearch($ClientPos[0] + 393, $ClientPos[1] + 562, $ClientPos[0] + 393, $ClientPos[1] + 562, 0xCBBE33, $Tolerance)
 		 If Not(@error) Then
 			;Left or Right
-			PixelSearch($ClientPos[0] + 423, $ClientPos[1] + 560, $ClientPos[0] + 423, $ClientPos[1] + 560, 0x342F14, 15)
+			PixelSearch($ClientPos[0] + 425, $ClientPos[1] + 560, $ClientPos[0] + 425, $ClientPos[1] + 560, 0xC2B71C, $Tolerance)
 			If Not(@Error) Then
-			   ConsoleWrite("RIGHT, ")
-			   _ArrayInsert($MoveArray, $Moves, "Right")
-			Else
 			   ConsoleWrite("LEFT, ")
 			   _ArrayInsert($MoveArray, $Moves, "Left")
+			Else
+			   ConsoleWrite("RIGHT, ")
+			   _ArrayInsert($MoveArray, $Moves, "Right")
 			EndIf
 			$Moves = $Moves + 1
 			Sleep(200)
@@ -240,7 +257,7 @@ While $Loop <= $numOfGames
 			Sleep(250)
 		 EndIf
 	  Next
-	  ProgressSet((($Round - 1) * 20), (($Round - 1) * 20) & "%",  "Amount of Games: " & $Loop & "/" & $numOfGames)
+	  ProgressSet((($Round - 1) * 20), (($Round - 1) * 20) & "%  (press 'q' to quit)",  "Amount of Games: " & $Loop & "/" & $numOfGames)
    Next
    Sleep(2500) ;Wait for loading
    MouseClick("Left", $ClientPos[0] + 620, $ClientPos[1] + 588) ;Next

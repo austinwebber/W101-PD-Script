@@ -1,3 +1,9 @@
+#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
+#AutoIt3Wrapper_Icon=C:\Users\Austi\Documents\GitHub\W101-PD-Script\W101.ico
+#AutoIt3Wrapper_Outfile_x64=PetDanceScript.exe
+#AutoIt3Wrapper_UseX64=y
+#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
+
 #cs ----------------------------------------------------------------------------
 
  AutoIt Version: 3.3.14.5
@@ -19,9 +25,6 @@
 
 #ce ----------------------------------------------------------------------------
 
-#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
-#AutoIt3Wrapper_Icon=..\..\..\Downloads\W101.ico
-#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 #include <Array.au3>
 #include <ButtonConstants.au3>
 #include <ComboConstants.au3>

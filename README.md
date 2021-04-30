@@ -14,6 +14,7 @@ Instructions (non-Steam version):
  6. If it ends up failing a few times, adjust color tolerance to 15 through the GUI.
 
 Game Settings:
+
     Resolution 800x600  
     UI Size HUGE  
     Texture Detail HIGH  

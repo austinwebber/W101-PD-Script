@@ -201,9 +201,6 @@ While $Loop <= $numOfGames
    $y = $y + 1 ;Increment Index
    MouseClick("Left", $ClientPos[0] + 627, $ClientPos[1] + 588)
    Local $MoveArray[7] = []
-   While PixelGetColor($ClientPos[0] + 141, $ClientPos[1] + 154, 5) == 15694520 ;Wait until minigame has loaded
-	  Sleep(20)
-   WEnd
    ConsoleWrite("Game Starting... ")
    Sleep(1590) ;Allow for page turn animation
    For $Round = 2 to 6

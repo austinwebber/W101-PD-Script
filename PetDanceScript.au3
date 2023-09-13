@@ -1,5 +1,10 @@
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
-#AutoIt3Wrapper_Icon=C:\Users\Austi\Documents\GitHub\W101-PD-Script\W101.ico
+#AutoIt3Wrapper_Icon=W101.ico
+#AutoIt3Wrapper_Outfile_x64=PetDanceScript.exe
+#AutoIt3Wrapper_UseX64=y
+#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
+#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
+#AutoIt3Wrapper_Icon=C:\Users\Alec\Desktop\W101-PD-Script-1.4\W101.ico
 #AutoIt3Wrapper_Outfile_x64=PetDanceScript.exe
 #AutoIt3Wrapper_UseX64=y
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
@@ -50,10 +55,11 @@ Global $MarleyBoneCoords[1] = [402]
 Global $MooshuCoords[1] = [516]
 Global $DragonspyreCoords[1] = [631]
 Global $TempLocationCoords[0] = []
-
+Global $numOfGames =0
+Global $LagTimer=4500
 #Region ### START Koda GUI section ### Form=c:\users\admin\desktop\autoit\form1.kxf
-Global $PDGUI = GUICreate("W101 PD", 242, 199, -1, -1)
-Global $Start = GUICtrlCreateButton("Start", 8, 168, 225, 25)
+Global $PDGUI = GUICreate("W101 PD", 242, 230, -1, -1)
+Global $Start = GUICtrlCreateButton("Start", 9, 200, 225, 25)
 Global $Locations = GUICtrlCreateLabel("Locations to Farm:", 8, 8, 91, 17)
 GUICtrlSetFont(-1, 8, 400, 4, "MS Sans Serif")
 Global $WizardCity = GUICtrlCreateCheckbox("Wizard City", 16, 24, 73, 17)
@@ -71,11 +77,14 @@ Global $S3 = GUICtrlCreateCheckbox("Snack 3", 152, 56, 57, 17)
 Global $S4 = GUICtrlCreateCheckbox("Snack 4", 152, 72, 57, 17)
 Global $S5 = GUICtrlCreateCheckbox("Snack 5", 152, 88, 57, 17)
 Global $Games = GUICtrlCreateInput("", 8, 138, 89, 21)
+Global $Lagometer = GUICtrlCreateInput("4500",8,177,89,21)
 GUICtrlSetBkColor(-1, 0xFFFFFF)
 GUICtrlSetTip(-1, "Amount of Games")
 Global $Label2 = GUICtrlCreateLabel("Amount of Games:", 8, 120, 91, 17)
 GUICtrlSetFont(-1, 8, 400, 4, "MS Sans Serif")
 Global $Label3 = GUICtrlCreateLabel("Color Tolerance:", 141, 120, 82, 17)
+GUICtrlSetFont(-1, 8, 400, 4, "MS Sans Serif")
+Global $Label4 = GUICtrlCreateLabel("Lag-o-meter:", 8, 160, 91, 17)
 GUICtrlSetFont(-1, 8, 400, 4, "MS Sans Serif")
 Global $comboBox = GUICtrlCreateCombo("", 136, 138, 89, 21, BitOR($CBS_DROPDOWN,$CBS_AUTOHSCROLL))
 GUICtrlSetData(-1, "10|15", "15")
@@ -153,13 +162,15 @@ While 1
 			Else
 				$SnacksArray[4] = 0
 			EndIf
-
+			If (GUICtrlRead($Lagometer)) Then
+				$LagTimer = Number(GUICtrlRead($Lagometer))
+			EndIf
 			;Handle if the user checks no boxes
 			Local $Amount1 = UBound($TempSnackCoords)
 			Local $Amount2 = UBound($TempLocationCoords)
 			if ($Amount1 <= 0) Then
-				$SnacksArray[0] = 1
-				_ArrayAdd($TempSnackCoords, $Snack1Coords)
+				$SnacksArray[0] = 0
+				_ArrayAdd($TempSnackCoords, $Amount1)
 			EndIf
 			if ($Amount2 <= 0) Then
 				$LocationsArray[0] = 1
@@ -191,6 +202,8 @@ Local $x = 0 ;Current index in $TempSnackCoords
 Local $y = 0 ;Current index in $TempLocationCoords
 ProgressOn("", "Amount of Games", $DLG_NOTITLE) ;Create Progress Bar
 While $Loop <= $numOfGames
+	ConsoleWrite("$numOfGames: "&$numOfGames&@CRLF)
+	ConsoleWrite("$Loop: "&$Loop&@CRLF)
    ProgressSet(0, 0 & "%  (press 'q' to quit)", "Amount of Games: " & $Loop & "/" & $numOfGames) ;Progress Bar Update
    Send("x")
    Sleep(300)
@@ -201,7 +214,7 @@ While $Loop <= $numOfGames
    $y = $y + 1 ;Increment Index
    MouseClick("Left", $ClientPos[0] + 627, $ClientPos[1] + 588)
    Local $MoveArray[7] = []
-   ConsoleWrite("Game Starting... ")
+   ConsoleWrite("Game Starting... "&@CRLF)
    Sleep(1590) ;Allow for page turn animation
    For $Round = 2 to 6
 	  Local $Moves = 0
@@ -238,6 +251,7 @@ While $Loop <= $numOfGames
 	  WEnd
 	  ;Execute Moves
 	  Sleep(500)
+	  ConsoleWrite(@CRLF)
 	  For $i = 0 to $Moves
 		 If $MoveArray[$i] == "Down" Then
 			ConsoleWrite("Sending Down, ")
@@ -264,22 +278,18 @@ While $Loop <= $numOfGames
    Sleep(100)
    if ($x == UBound($TempSnackCoords)) Then ;Reset Index
 		$x = 0
-   EndIf
-   #_ArrayDisplay($TempSnackCoords)
+	EndIf
+	#_ArrayDisplay($TempSnackCoords)
    ConsoleWrite($x)
-   MouseClick("Left", $ClientPos[0] + $TempSnackCoords[$x], $ClientPos[1] + 480) ;Snack Select
-   $x = $x + 1
-   MouseClick("Left", $ClientPos[0] + 620, $ClientPos[1] + 588) ;Feed Pet
+	if ($TempSnackCoords[0] <= 0) Then
+	Else
+		MouseClick("Left", $ClientPos[0] + $TempSnackCoords[$x], $ClientPos[1] + 480) ;Snack Select
+		$x = $x + 1
+		MouseClick("Left", $ClientPos[0] + 620, $ClientPos[1] + 588);Feed Pet
+	EndIf
    MouseClick("Left", $ClientPos[0] + 184, $ClientPos[1] + 588) ;Exit
    $Loaded = False
-   While $Loaded == False
-	  PixelSearch($ClientPos[0] + 239, $ClientPos[1] + 537, $ClientPos[0] + 239, $ClientPos[1] + 537, 0xEF76B5, 5) ;Check if finished
-	  If Not(@Error) Then
-		 $Loaded = True
-	  Else
-		 Sleep(50)
-	  EndIf
-   WEnd
+   Sleep($LagTimer) ;Wait for loading
    $Loop = $Loop + 1
 WEnd
 ProgressSet(100, "Done!", "Complete")

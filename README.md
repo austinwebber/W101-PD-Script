@@ -20,5 +20,5 @@ Instructions (non-Steam version):
 
  3. Go to the Pet Dance game, wait on the spiral located on the ground in front of the game, and make sure menu is closed.  
  4. Run the executable file.
- 5. Enter amount of games.  
+ 5. Enter amount of games, what snacks to use, and the time (in miliseconds) for the macro to wait before starting the loop again.
  6. If it ends up failing a few times, adjust color tolerance to 15 through the GUI.
